@@ -13,7 +13,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'build')));
-
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 
 mongoose.connect('mongodb+srv://vamshi:vamshi@cluster0.lgd4d.mongodb.net/Users', {

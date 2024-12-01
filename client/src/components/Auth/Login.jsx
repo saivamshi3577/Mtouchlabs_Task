@@ -1,8 +1,8 @@
-
-
 import React, { useState } from 'react';
-import axios from '../../services/api';  // Adjust the import based on your axios setup
+import axios from '../../services/api';  
 import { useNavigate } from 'react-router-dom';
+import './Login.css';
+
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -16,16 +16,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Send login credentials to the backend
+
       const response = await axios.post('http://localhost:7777/auth/login', form);
 
-      // Store the token in localStorage after successful login
+  
       localStorage.setItem('token', response.data.token);
 
-      // Navigate to the 'products' page after login
       navigate('/products');
     } catch (err) {
-      // Display error message if login fails
+
       setError(err.response?.data?.msg || 'Invalid credentials');
     }
   };
@@ -91,3 +90,64 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
+// import React, { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import './Login.css';
+
+// const Login = ({ toggleForm }) => {
+//   const [form, setForm] = useState({ email: '', password: '' });
+//   const [error, setError] = useState('');
+//   const navigate = useNavigate();
+
+//   const handleChange = (e) => {
+//     setForm({ ...form, [e.target.name]: e.target.value });
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const response = await axios.post('http://localhost:7777/auth/login', form);
+//       localStorage.setItem('token', response.data.token);
+//       navigate('/products');
+//     } catch (err) {
+//       setError(err.response?.data?.msg || 'Invalid credentials');
+//     }
+//   };
+
+//   return (
+//     <div className="form-container login">
+//       <h2>Login</h2>
+//       <form onSubmit={handleSubmit}>
+//         <input
+//           type="email"
+//           name="email"
+//           placeholder="Email"
+//           value={form.email}
+//           onChange={handleChange}
+//           required
+//         />
+//         <input
+//           type="password"
+//           name="password"
+//           placeholder="Password"
+//           value={form.password}
+//           onChange={handleChange}
+//           required
+//         />
+//         <button type="submit">Login</button>
+//       </form>
+//       {error && <p className="error">{error}</p>}
+//       <p>
+//         Don't have an account?{' '}
+//         <span onClick={toggleForm} className="toggle-link">
+//           Sign Up
+//         </span>
+//       </p>
+//     </div>
+//   );
+// };
+
+// export default Login;
