@@ -14,7 +14,7 @@ const SignUp = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://mtouchlabs-task-1.onrender.com/signup', form, {
+      const response = await axios.post('https://mtouchlabs-task-1.onrender.com/api/auth/signup', form, {
         headers: {
           'Content-Type': 'application/json',
         },
