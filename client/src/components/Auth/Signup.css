@@ -1,4 +1,4 @@
-.signup-container {
+/* .signup-container {
   display: flex;
   height: 100vh;
   width: 100%;
@@ -107,6 +107,119 @@ button:hover {
 
   .signup-form-container {
     height: 60vh;
+    flex: none;
+  }
+} */
+
+
+
+/* Common styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+.login-container,
+.signup-container {
+  display: flex;
+  height: 100vh;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.login-image,
+.signup-image {
+  flex: 1;
+  background-size: cover;
+  background-position: center;
+}
+
+.login-image {
+  background-image: url('https://img.freepik.com/free-photo/gradient-technology-background_23-2151895862.jpg?t=st=1733026498~exp=1733030098~hmac=2ab68a317da1c049a7f248666146ea2a9a780dbe5d72adecba53623f25880907&w=360'); /* Replace with your image path */
+}
+
+.signup-image {
+  background-image: url('https://img.freepik.com/free-photo/gradient-technology-background_23-2151895862.jpg?t=st=1733026498~exp=1733030098~hmac=2ab68a317da1c049a7f248666146ea2a9a780dbe5d72adecba53623f25880907&w=360'); /* Replace with your image path */
+}
+
+.login-form,
+.signup-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.switch-btn {
+  background-color: #28a745;
+}
+
+.switch-btn:hover {
+  background-color: #218838;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .login-container,
+  .signup-container {
+    flex-direction: column;
+  }
+
+  .login-image,
+  .signup-image {
+    height: 40%;
     flex: none;
   }
 }
