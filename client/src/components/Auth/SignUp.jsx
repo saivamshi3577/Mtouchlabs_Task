@@ -14,7 +14,7 @@ const SignUp = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:7777/signup', form, {
+      const response = await axios.post('https://mtouchlabs-task-1.onrender.com/signup', form, {
         headers: {
           'Content-Type': 'application/json',
         },

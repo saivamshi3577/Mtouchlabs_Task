@@ -17,7 +17,7 @@ const Login = () => {
     e.preventDefault();
     try {
 
-      const response = await axios.post('http://localhost:7777/auth/login', form);
+      const response = await axios.post('https://mtouchlabs-task-1.onrender.com/auth/login', form);
 
   
       localStorage.setItem('token', response.data.token);
