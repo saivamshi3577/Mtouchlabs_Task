@@ -19,7 +19,7 @@ const SignUp = () => {
           'Content-Type': 'application/json',
         },
       });
-
+  
       const { token, msg } = response.data;
 
       localStorage.setItem('token', token);
