@@ -1,62 +1,90 @@
 
 
 const express = require('express');
-const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs'); 
+const jwt = require('jsonwebtoken'); 
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
 
 const app = express();
-const PORT = 7777;
-const JWT_SECRET = 'your_jwt_secret_key';
-
-let users = [];
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.post('/signup', (req, res) => {
-  const { email, password } = req.body;
+mongoose.connect('mongodb+srv://vamshi:vamshi@cluster0.lgd4d.mongodb.net/Users', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => console.error('Error connecting to MongoDB:', err));
 
-  if (!email || !password) {
-    return res.status(400).json({ msg: 'Email and password are required' });
-  }
-
-  const userExists = users.some((user) => user.email === email);
-  if (userExists) {
-    return res.status(400).json({ msg: 'User already exists' });
-  }
-
-  const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: '1h' });
-  const newUser = { email, password, token };
-  users.push(newUser);
-
-  return res.status(201).json({ token, msg: 'Signup successful' });
+const userSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
 });
 
-app.post('/auth/login', (req, res) => {
-  const { email, password } = req.body;
+const User = mongoose.model('User', userSchema);
 
-  if (!email || !password) {
-    return res.status(400).json({ message: 'Email and password are required' });
-  }
 
-  const user = users.find((u) => u.email === email && u.password === password);
-  if (!user) {
-    return res.status(401).json({ message: 'Invalid credentials' });
-  }
-
+app.post('/signup', async (req, res) => {
   try {
-    const decoded = jwt.verify(user.token, JWT_SECRET);
-    if (decoded.email !== email) {
-      throw new Error('Token mismatch');
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ msg: 'Email and password are required' });
     }
-    return res.status(200).json({ token: user.token, message: 'Login successful' });
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ msg: 'Email already exists' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({ email, password: hashedPassword });
+    await newUser.save();
+
+    res.status(201).json({ msg: 'User created successfully' });
   } catch (err) {
-    return res.status(401).json({ message: 'Token validation failed' });
+    console.error('Error during signup:', err);
+    res.status(500).json({ msg: 'Server error. Please try again later.' });
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.post('/auth/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ msg: 'Email and password are required' });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ msg: 'Invalid email or password' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ msg: 'Invalid email or password' });
+    }
+
+    const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
+
+    res.status(200).json({
+      msg: 'Login successful',
+      token,
+      user: { email: user.email }
+    });
+  } catch (err) {
+    console.error('Error during login:', err);
+    res.status(500).json({ msg: 'Server error. Please try again later.' });
+  }
 });
 
+
+const PORT = 7777;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
