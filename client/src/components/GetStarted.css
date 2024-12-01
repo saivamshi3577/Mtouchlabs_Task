@@ -1,0 +1,33 @@
+.get-started {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-image: url('https://img.freepik.com/free-photo/laptop-shopping-bags-online-shopping-concept_1423-189.jpg?t=st=1733025887~exp=1733029487~hmac=f2196001f588edcaec31b07f4852b7c51936347132c1ae53a2c76c3a7c866148&w=1060');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #fff;
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #f38208;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.btn:hover {
+  background-color: #ff0000;
+}
